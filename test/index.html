@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>StateMachine Test</title>
+</head>
+<body>
+    
+    <script src="../state_machine.js"></script>
+    <script>
+
+        // 假设为一个人设置一个状态机
+        var myState = new StateMachine({
+            // 年龄
+            age: 27,
+            // 姓名
+            name: 'season.chen',
+            // 是否结婚
+            marry: false,
+            // 朋友个数
+            friends: 10,
+            // 房
+            house: false,
+            // 车
+            car: false
+        });
+
+        // 给这个状态机绑定一些事件
+        
+        // 年龄改变
+        myState.on('changeEge', function(data) {
+            console.log('哎呦，我又老了'+ (data.to.age - data.from.age) +'岁！');
+        }, {
+            change: ['age']
+        });
+
+        // 晚婚 大于30岁结婚
+        myState.on('lateMarriage', function(form, to) {
+            console.log('大于30岁才结婚，丢不丢人？');
+        }, {
+            from: {marry: false},
+            to: {
+                marry: true, 
+                age: function(from, to) {
+                    return to >= 30;
+                }
+            }
+        }); 
+
+        // 早婚 小于30岁结婚
+        myState.on('earlyMarriage', function(form, to) {
+            console.log('不到30就结婚了，还可以额么么哒!');
+        }, {
+            from: {marry: false},
+            to: {
+                marry: true, 
+                age: function(from, to) {
+                    return to < 30;
+                }
+            }
+        }); 
+
+        // 改了名字
+        myState.on('changeName', function(data) {
+            console.log('我将名字改成了' + data.to.name);
+        }, {
+            change: ['name']
+        });
+
+        // 改了个奇葩名字
+        myState.on('changeWonderfulName', function(data) {
+            console.log('我是不是脑子坏掉了，竟然改了个这么挫的名字：' + data.to.name);
+        }, {
+            to: {
+                name: /王八蛋|傻子/
+            },
+            change: ['name']
+        });
+
+        // 30岁前，买车、买房，还结了婚，我从此走向了人生巅峰！
+        myState.on(' toThePinnacle', function(data) {
+            console.log('哈哈哈！哈哈哈！我从此走向了人生巅峰！');
+        }, function(from, to, changes) {
+            // 年龄、车、房、结婚任何一个没有改变，不触发事件
+            if (!~changes.indexOf('age') 
+                && ~changes.indexOf('car') 
+                && ~changes.indexOf('house') 
+                && ~changes.indexOf('marry')) {
+                return false;
+            }
+
+            if (to.age < 30 && to.car && to.house && to.marry) {
+                return true;
+            }
+
+            return false;
+        });
+        
+        myState.reset();
+        myState.set('age', 29);
+        
+        myState.reset();
+        myState.set('marry', true);
+
+        myState.reset();
+        myState.set({
+            marry: true,
+            age: 31
+        });
+        
+        myState.reset();
+        myState.set('name', '王大锤！');
+        
+        myState.reset();
+        myState.set('name', '王八蛋1');
+        
+        myState.reset();
+        myState.set({
+            marry: true,
+            age: 28,
+            house: true,
+            car: true
+        });
+
+    </script>
+</body>
+</html>
