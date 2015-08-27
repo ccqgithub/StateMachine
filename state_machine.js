@@ -20,7 +20,9 @@ var StateMachine = function(states) {
  * 将状态重置到初始化状态
  */
 StateMachine.prototype.reset = function() {
-    this.set(this._initStates);
+    for (var key in this._initStates) {
+        this._states[key] = this._initStates[key];
+    }
 }
 
 /**
