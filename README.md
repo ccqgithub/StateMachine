@@ -23,7 +23,7 @@ StateMachine: Javascript 有限状态机
 
 ## 如何使用？
 
-> 注意：有用到es5的`Array.prototype.forEach`和`Array.prototype.filter`，不支持这两个函数的ie8或以下的浏览器暂时请自行解决。
+> 注意：有用到es5的`Array.prototype.forEach`，`Array.prototype.filter`，`Array.prototype.indexOf`，不支持这几个函数的ie8或以下的浏览器暂时请自行解决。
 
 * 引入js
 
