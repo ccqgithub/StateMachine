@@ -254,7 +254,7 @@ StateMachine.prototype._checkOneCondition = function(condition, compareStates, c
                 break;
             case 'string':
             case 'other':
-                flag = compareStates[key] == cond;
+                flag = compareStates[key] === cond;
                 break;
             case 'array':
                 flag = ~cond.indexOf(compareStates[key]);
