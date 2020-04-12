@@ -50,7 +50,7 @@ StateMachine.prototype.set = function(stateKey, stateValue) {
 StateMachine.prototype.get = function(stateKey) {
     var curStates = this._cloneStates();
     if (!arguments.length) return curStates;
-    return curStates(stateKey);
+    return curStates[stateKey];
 }
 
 /**
