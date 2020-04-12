@@ -199,15 +199,17 @@ StateMachine: Javascript 有限状态机
     myState.on(' toThePinnacle', function(data) {
         console.log('哈哈哈！哈哈哈！我从此走向了人生巅峰！');
     }, function(from, to, changes) {
-        // 年龄、车、房、结婚任何一个没有改变，不触发事件
-        if (!~changes.indexOf('age') 
-            && ~changes.indexOf('car') 
-            && ~changes.indexOf('house') 
-            && ~changes.indexOf('marry')) {
-            return false;
-        }
-
-        if (to.age < 30 && to.car && to.house && to.marry) {
+        if (
+            // 触发因子：年龄、车、房、结婚任何一个改变，都可能触发事件
+            (
+                changes.indexOf('age') !== -1 
+                || changes.indexOf('car') !== -1
+                || changes.indexOf('house') !== -1
+                || changes.indexOf('marry') !== -1
+            )
+            // 触发条件
+            && (to.age < 30 && to.car && to.house && to.marry)
+        ) {
             return true;
         }
 
@@ -216,8 +218,10 @@ StateMachine: Javascript 有限状态机
 
     myState.reset();
     myState.set({
-        marry: true,
         age: 28,
         house: true,
         car: true
+    });
+    myState.set({
+        marry: true
     });
