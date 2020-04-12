@@ -225,3 +225,7 @@ StateMachine: Javascript 有限状态机
     myState.set({
         marry: true
     });
+
+## todo
+
+- 重写
